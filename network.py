@@ -1,13 +1,11 @@
 import numpy as np
-from keras import layers
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Dropout
 from keras import regularizers
 from keras.metrics import MeanSquaredError
-from keras import backend as K
+
 import wandb
 import keras
 import json
@@ -78,7 +76,6 @@ def build_model(activation1,activation2,activation3,activation4,dropout = 0.1, n
         metrics_model.add(Dropout(dropout))
         metrics_model.add(Dense(16, activation=activation3, kernel_regularizer=regularizers.l2(regu)))
         metrics_model.add(Dense(1, activation=activation4, kernel_regularizer=regularizers.l2(regu)))
-
 
     return metrics_model
 

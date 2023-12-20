@@ -1,19 +1,13 @@
 import numpy as np
 import random
 import copy
-import json
-import time
-import kivy
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivymd.utils import asynckivy
 from kivy.core.window import Window
-from sklearn.neural_network import MLPClassifier
 from keras.models import load_model
-from kivy.graphics import Rectangle
-import pickle
 
 
 
@@ -37,7 +31,6 @@ class checkers_game_with_graphics(App):
         str = np.array2string(self.board)
         str = self.change_str(str)
         self.board_list.append(str)
-        print(self.board)
         label1 = Label(text='Welcome to the Checkers Game!')
         label2 = Label(text='Instructions:\n\n'
                             'In each turn you will need to move one of your tools\n'
@@ -55,7 +48,7 @@ class checkers_game_with_graphics(App):
         label2.font_size = 25
         self.layout.add_widget(label1)
         self.layout.add_widget(label2)
-        button1 = Button(text = 'continue',background_normal='blue_opening_background.jpg', font_size = 30)
+        button1 = Button(text = 'continue',background_normal='GUI_images/blue_opening_background.jpg', font_size = 30)
         button1.bind(on_press = self.pick_level)
         button1.size_hint_y = 0.15
         self.layout.add_widget(button1)
@@ -63,9 +56,9 @@ class checkers_game_with_graphics(App):
 
 
     def pick_level(self, instance):
-        easy = Button(text='Easy',background_normal='test_background.jpg', size_hint=(1, None), height=200,font_size=60,color=(0, 0, 0, 1))
-        medium = Button(text='Medium',background_normal='test_background1.jpg', size_hint=(1, None), height=200,font_size=60,color=(0, 0, 0, 1))
-        hard = Button(text='Hard',background_normal='test_background2.jpg', size_hint=(1, None), height=200,font_size=60,color=(0, 0, 0, 1))
+        easy = Button(text='Easy',background_normal='GUI_images/test_background.jpg', size_hint=(1, None), height=200,font_size=60,color=(0, 0, 0, 1))
+        medium = Button(text='Medium',background_normal='GUI_images/test_background1.jpg', size_hint=(1, None), height=200,font_size=60,color=(0, 0, 0, 1))
+        hard = Button(text='Hard',background_normal='GUI_images/test_background2.jpg', size_hint=(1, None), height=200,font_size=60,color=(0, 0, 0, 1))
         hard.bind(on_press=self.play_hard)
         medium.bind(on_press=self.play_medium)
         easy.bind(on_press=self.play_easy)
@@ -97,24 +90,24 @@ class checkers_game_with_graphics(App):
             for j in range(8):
                 if i%2 == 0:
                     if j%2 == 0:
-                        button = Button(background_normal='bright_background 1.jpg', font_size=1)
+                        button = Button(background_normal='GUI_images/bright_background 1.jpg', font_size=1)
                     else:
                         if self.board[i][j] == self.human:
-                            button = Button(background_normal='dark_human_background 1.jpg', font_size=1)
+                            button = Button(background_normal='GUI_images/dark_human_background 1.jpg', font_size=1)
                         elif self.board[i][j] == self.computer:
-                            button = Button(background_normal='dark_computer_background 1.jpg', font_size=1)
+                            button = Button(background_normal='GUI_images/dark_computer_background 1.jpg', font_size=1)
                         else:
-                            button = Button(background_normal='dark_background 1.jpg', font_size=1)
+                            button = Button(background_normal='GUI_images/dark_background 1.jpg', font_size=1)
                 else:
                     if j % 2 == 0:
                         if self.board[i][j] == self.human:
-                            button = Button(background_normal='dark_human_background 1.jpg', font_size=1)
+                            button = Button(background_normal='GUI_images/dark_human_background 1.jpg', font_size=1)
                         elif self.board[i][j] == self.computer:
-                            button = Button(background_normal='dark_computer_background 1.jpg', font_size=1)
+                            button = Button(background_normal='GUI_images/dark_computer_background 1.jpg', font_size=1)
                         else:
-                            button = Button(background_normal='dark_background 1.jpg', font_size=1)
+                            button = Button(background_normal='GUI_images/dark_background 1.jpg', font_size=1)
                     else:
-                        button = Button(background_normal='bright_background 1.jpg', font_size=1)
+                        button = Button(background_normal='GUI_images/bright_background 1.jpg', font_size=1)
 
                 if self.board[i][j] == self.human:
                     button.bind(on_press=self.show_moves)
@@ -126,7 +119,7 @@ class checkers_game_with_graphics(App):
 
     def show_moves(self, instance):
         for i in self.showed_bottuns:
-            i.background_normal = 'dark_background 1.jpg'
+            i.background_normal = 'GUI_images/dark_background 1.jpg'
             i.unbind(on_press=self.human_play)
 
         self.showed_bottuns = []
@@ -139,7 +132,7 @@ class checkers_game_with_graphics(App):
 
     def show_move(self, p1):
         tuple = p1.end_pos
-        self.buttons[tuple[0]][tuple[1]].background_normal = ("green_background.jpg")
+        self.buttons[tuple[0]][tuple[1]].background_normal = ("GUI_images/green_background.jpg")
         self.showed_bottuns.append(self.buttons[tuple[0]][tuple[1]])
         self.buttons[tuple[0]][tuple[1]].bind(on_press=self.human_play)
         self.buttons[tuple[0]][tuple[1]].pos_hint = {'center_x': (tuple[0]), 'center_y': (tuple[1])}
@@ -157,12 +150,11 @@ class checkers_game_with_graphics(App):
                     break
             self.change_board(p1)
             self.check_human_kings()
-            print(self.board)
             str = np.array2string(self.board)
             str = self.change_str(str)
             self.board_list.append(str)
             for i in self.showed_bottuns:
-                i.background_normal = 'dark_background 1.jpg'
+                i.background_normal = 'GUI_images/dark_background 1.jpg'
                 i.unbind(on_press=self.human_play)
             self.showed_bottuns = []
             self.change_human_graphic_board(p1)
@@ -190,12 +182,11 @@ class checkers_game_with_graphics(App):
                 p1 = self.c1.smart_play()
             if self.game_level == 'hard':
                 m1 = MiniMax()
-                p1 = m1.minimax(copy.deepcopy(self.board), 2, 0, False)
+                p1 = m1.minimax(copy.deepcopy(self.board), 4, 0, False)
                 p1 = p1[1]
 
             self.change_board(p1)
             self.check_computer_kings()
-            print(self.board)
             str = np.array2string(self.board)
             str = self.change_str(str)
             self.board_list.append(str)
@@ -209,24 +200,24 @@ class checkers_game_with_graphics(App):
 
 
     def change_human_graphic_board(self, p1):
-        self.buttons[p1.begin_pos[0]][p1.begin_pos[1]].background_normal = 'dark_background 1.jpg'
+        self.buttons[p1.begin_pos[0]][p1.begin_pos[1]].background_normal = 'GUI_images/dark_background 1.jpg'
         if self.board[p1.end_pos[0]][p1.end_pos[1]] == self.human_king:
-            self.buttons[p1.end_pos[0]][p1.end_pos[1]].background_normal = 'dark_human_king_background 1.jpg'
+            self.buttons[p1.end_pos[0]][p1.end_pos[1]].background_normal = 'GUI_images/dark_human_king_background 1.jpg'
         else:
-            self.buttons[p1.end_pos[0]][p1.end_pos[1]].background_normal = 'dark_human_background 1.jpg'
+            self.buttons[p1.end_pos[0]][p1.end_pos[1]].background_normal = 'GUI_images/dark_human_background 1.jpg'
 
         for i in p1.delete_pos:
-            self.buttons[i[0]][i[1]].background_normal = 'dark_background 1.jpg'
+            self.buttons[i[0]][i[1]].background_normal = 'GUI_images/dark_background 1.jpg'
 
     def change_computer_graphic_board(self, p1):
-        self.buttons[p1.begin_pos[0]][p1.begin_pos[1]].background_normal = 'dark_background 1.jpg'
+        self.buttons[p1.begin_pos[0]][p1.begin_pos[1]].background_normal = 'GUI_images/dark_background 1.jpg'
         if self.board[p1.end_pos[0]][p1.end_pos[1]] == self.computer_king:
-            self.buttons[p1.end_pos[0]][p1.end_pos[1]].background_normal = 'dark_computer_king_background 1.jpg'
+            self.buttons[p1.end_pos[0]][p1.end_pos[1]].background_normal = 'GUI_images/dark_computer_king_background 1.jpg'
         else:
-            self.buttons[p1.end_pos[0]][p1.end_pos[1]].background_normal = 'dark_computer_background 1.jpg'
+            self.buttons[p1.end_pos[0]][p1.end_pos[1]].background_normal = 'GUI_images/dark_computer_background 1.jpg'
 
         for i in p1.delete_pos:
-            self.buttons[i[0]][i[1]].background_normal = 'dark_background 1.jpg'
+            self.buttons[i[0]][i[1]].background_normal = 'GUI_images/dark_background 1.jpg'
             self.buttons[i[0]][i[1]].unbind(on_press=self.show_moves)
 
 
@@ -415,7 +406,6 @@ class Computer:
             board = board.reshape(-1, 64)
             #board = self.scale_board(board)
             prediction = self.model.predict(board)
-            print(prediction)
             self.moves_with_rank.append((i, prediction))
 
         best_rank = -1
@@ -561,7 +551,6 @@ class network_MiniMax:#max player-True-computer,false-human
         board1 = board1.reshape(-1, 64)
         #board1 = self.scale_board(board1)
         prediction = self.model.predict(board1)
-        print(prediction)
         return prediction
 
 
@@ -636,16 +625,15 @@ class MiniMax:#max player-True-human,false-computer side
                     counter+=1
         return counter
 
-
     def evaluate(self, board):
         player_pieces = self.get_num_pieces(board, 1)
         player_kings = self.get_num_pieces(board, 2)
         computer_pieces = self.get_num_pieces(board, 3)
         computer_kings = self.get_num_pieces(board, 4)
-        return player_pieces - computer_pieces + (player_kings * 4 - computer_kings * 4)
+        return (player_pieces - computer_pieces + (player_kings * 4 - computer_kings * 4))
 
 
-    def minimax(self,board,depth, move, max_player):
+    def minimax(self,board,depth, move, max_player, alpha=float('-inf'), beta=float('inf')):
 
         if depth == 0 or self.check_human_win(board) == True or self.check_computer_win(board) == True:
             return self.evaluate(board), move
@@ -661,6 +649,9 @@ class MiniMax:#max player-True-human,false-computer side
                 maxEval = max(maxEval, evaluation)
                 if maxEval == evaluation:
                     best_move = pos
+                alpha = max(alpha, evaluation)
+                if beta <= alpha:
+                    break
 
             return maxEval, best_move
         else:
@@ -674,7 +665,9 @@ class MiniMax:#max player-True-human,false-computer side
                 minEval = min(minEval, evaluation)
                 if minEval == evaluation:
                     best_move = pos
-
+                beta = min(beta, evaluation)
+                if beta <= alpha:
+                    break
             return minEval, best_move
 
 
@@ -695,13 +688,13 @@ class MiniMax:#max player-True-human,false-computer side
 
     def check_human_win(self,board):
 
-        if self.get_num_pieces(board,2) >0:
+        if self.get_num_pieces(board,2) > 0:
             return True
         return False
 
 
     def check_computer_win(self,board):
-        if self.get_num_pieces(board,4) >0:
+        if self.get_num_pieces(board,4) > 0:
             return True
         return False
 
